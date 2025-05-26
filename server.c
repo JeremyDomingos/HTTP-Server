@@ -19,6 +19,12 @@ int __cdecl main(void)
 
     WSADATA wsaData;
     int iResult;
+    char recvbuf[DEFAULT_BUFF_LEN];
+    int iSendResult;
+    int recvbuflen = DEFAULT_BUFF_LEN;
+
+    SOCKET ListeningSocket = INVALID_SOCKET;
+    SOCKET ClientSocket = INVALID_SOCKET;
 
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0)
@@ -46,8 +52,6 @@ int __cdecl main(void)
     }
 
     // Listening socket defined
-
-    SOCKET ListeningSocket = INVALID_SOCKET;
 
     ListeningSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
@@ -89,10 +93,7 @@ int __cdecl main(void)
 
     // ACCEPT A CONNECTION
 
-    SOCKET ClientSocket;
-
     ClientSocket = INVALID_SOCKET;
-
     ClientSocket = accept(ListeningSocket, NULL, NULL);
 
     if (ClientSocket == INVALID_SOCKET)
@@ -105,10 +106,6 @@ int __cdecl main(void)
     }
 
     closesocket(ListeningSocket);
-
-    char recvbuf[DEFAULT_BUFF_LEN];
-    int iSendResult;
-    int recvbuflen = DEFAULT_BUFF_LEN;
 
     do
     {
